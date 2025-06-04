@@ -3,53 +3,42 @@ package main.java.ufrn.br.core;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import main.java.ufrn.br.BookLog;
-import main.java.ufrn.br.annotations.Get;
-import main.java.ufrn.br.annotations.Param;
+import main.java.ufrn.br.annotations.*;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ServerRequestHandler implements HttpHandler {
     final String route;
 
     private BookLog bookLog = new BookLog();
 
+    private JsonMarshaller marshaller = new JsonMarshaller();
+
+    private Invoker invoker = new Invoker();
+
     public ServerRequestHandler(String route) {
         this.route = route;
     }
 
-    private Object invoke(Object instance, String methodName) throws InvocationTargetException, IllegalAccessException {
-        for (Method method : instance.getClass().getDeclaredMethods()){
-            Get get = method.getAnnotation(Get.class);
-            if (get != null && get.route().equals(methodName)){
-                Parameter[] params = method.getParameters();
-                if (params.length > 0){
-                    for (Parameter param : params){
-                        if (param.isAnnotationPresent(Param.class)){
-                            Param annotation = param.getAnnotation(Param.class);
-                            System.out.println("Notação: " + annotation.name());
-                        }
-                    }
-                }
-                return method.invoke(bookLog);
-            }
-        }
-        return "Method not found";
-    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         System.out.println(exchange.getRequestURI());
+        Set<String> allowedMethods = new HashSet<>(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         try{
-            if ("POST".equals(exchange.getRequestMethod())){
-                System.out.println("POST Request");
-            } else if ("GET".equals(exchange.getRequestMethod())) {
-                System.out.println("GET Request");
-                Object result = invoke(bookLog, exchange.getRequestURI().toString());
-                String response = "GET methos called";
+            if (allowedMethods.contains(exchange.getRequestMethod())){
+                JSONObject resourceRequest = marshaller.unmarshall(exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getRequestBody());
+                Object result = invoker.invoke(bookLog, resourceRequest);
+                String response = result.toString();
                 exchange.sendResponseHeaders(200, response.length());
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
@@ -60,8 +49,5 @@ public class ServerRequestHandler implements HttpHandler {
         } catch (Exception e){
             e.printStackTrace();
         }
-
-
-
     }
 }
