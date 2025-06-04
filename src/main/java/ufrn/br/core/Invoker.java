@@ -32,7 +32,7 @@ public class Invoker {
                             Parameter param = params[i]; // Param do metodo
                             if (param.isAnnotationPresent(Param.class)) { // Checa de param é anotado
                                 // Extrai o valor correspondente da rota usando o grupo regex
-                                String value = matcher.group(1);
+                                String value = matcher.group(i+1);
                                 args[i] = Integer.parseInt(value); // trata como int por simplicidade
                             }
                         }
