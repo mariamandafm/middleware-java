@@ -13,8 +13,9 @@ public class BookLog {
     }
 
     @Get(route = "books")
-    public void getAllBooks(){
-        System.out.println("Get all books");
+    public String getAllBooks(){
+
+        return "All books";
     }
 
     @Post(route = "book")
