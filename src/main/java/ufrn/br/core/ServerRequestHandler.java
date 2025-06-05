@@ -12,12 +12,11 @@ import java.util.Set;
 
 public class ServerRequestHandler implements HttpHandler {
     final String route;
-
-    private BookLog bookLog = new BookLog();
-
+    // TODO: Aplicar o singleton
     private JsonMarshaller marshaller = new JsonMarshaller();
-
+    // TODO: Aplicar o singleton
     private Invoker invoker = new Invoker();
+    private Lookup lookup = Lookup.getInstance();
 
     public ServerRequestHandler(String route) {
         this.route = route;
@@ -31,7 +30,9 @@ public class ServerRequestHandler implements HttpHandler {
         try{
             if (allowedMethods.contains(exchange.getRequestMethod())){
                 JSONObject resourceRequest = marshaller.unmarshall(exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getRequestBody());
-                Object result = invoker.invoke(bookLog, resourceRequest);
+                Object instance = lookup.getObject(resourceRequest.getString("remoteObject"));
+                Object result = invoker.invoke(instance, resourceRequest);
+
                 String response = result.toString();
                 byte[] responseBytes = response.getBytes();
                 exchange.sendResponseHeaders(200, responseBytes.length);
