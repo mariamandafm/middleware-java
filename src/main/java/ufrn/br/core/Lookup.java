@@ -3,7 +3,6 @@ package main.java.ufrn.br.core;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Implementar como singleton
 public class Lookup {
     private static final Lookup instance = new Lookup();
     private Map<String, Object> registry = new HashMap<>();

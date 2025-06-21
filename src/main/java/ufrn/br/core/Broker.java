@@ -6,7 +6,9 @@ import main.java.ufrn.br.annotations.RemoteComponent;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-public class Sprong {
+// TODO: Implementar Remoting Error
+// TODO: Unmarshall
+public class Broker {
     private Lookup lookup = Lookup.getInstance();
 
     public void registerObject(Object instance){
@@ -19,7 +21,7 @@ public class Sprong {
 
         server.createContext("/", new ServerRequestHandler("/"));
 
-        System.out.println("Sprong in up in 8080");
+        System.out.println("Server in up in " + port);
 
         server.setExecutor(null);
         server.start();

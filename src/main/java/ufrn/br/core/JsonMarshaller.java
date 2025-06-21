@@ -27,7 +27,6 @@ public class JsonMarshaller {
         String route = fullRoute.substring(firstSlash+1);
 
         JSONObject jsonObject = new JSONObject();
-        StringTokenizer tokenizer = new StringTokenizer(requestUri.toString());
         jsonObject.put("httpMethod", httpMethod);
         jsonObject.put("remoteObject", remoteObject);
         jsonObject.put("route", route);

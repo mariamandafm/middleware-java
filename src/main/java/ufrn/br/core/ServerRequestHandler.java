@@ -2,7 +2,6 @@ package main.java.ufrn.br.core;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import main.java.ufrn.br.BookLog;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,6 +29,7 @@ public class ServerRequestHandler implements HttpHandler {
         try{
             if (allowedMethods.contains(exchange.getRequestMethod())){
                 JSONObject resourceRequest = marshaller.unmarshall(exchange.getRequestMethod(), exchange.getRequestURI(), exchange.getRequestBody());
+                System.out.println(resourceRequest);
                 Object instance = lookup.getObject(resourceRequest.getString("remoteObject"));
                 Object result = invoker.invoke(instance, resourceRequest);
 
