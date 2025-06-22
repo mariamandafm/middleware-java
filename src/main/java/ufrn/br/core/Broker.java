@@ -1,10 +1,10 @@
 package main.java.ufrn.br.core;
 
-import com.sun.net.httpserver.HttpServer;
 import main.java.ufrn.br.annotations.RemoteComponent;
+import main.java.ufrn.br.core.server.HttpMessageHandler;
+import main.java.ufrn.br.core.server.HttpServer;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 
 // TODO: Implementar Remoting Error
 // TODO: Unmarshall
@@ -17,13 +17,9 @@ public class Broker {
     }
 
     public void startServer(int port) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-
-        server.createContext("/", new ServerRequestHandler("/"));
+        HttpServer server = new HttpServer(port, new HttpMessageHandler());
 
         System.out.println("Server in up in " + port);
-
-        server.setExecutor(null);
         server.start();
     };
 }

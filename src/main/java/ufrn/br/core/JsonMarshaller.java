@@ -2,10 +2,7 @@ package main.java.ufrn.br.core;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URI;
 import java.util.StringTokenizer;
 
@@ -19,11 +16,11 @@ public class JsonMarshaller {
     }
 
     // Chamado para ler requisição
-    public JSONObject unmarshall(String httpMethod, URI requestUri, InputStream requestBody) throws IOException {
-        String fullRoute = requestUri.toString().substring(1);
-        int firstSlash = fullRoute.indexOf('/');
+    public JSONObject unmarshall(String httpMethod, String requestUri, char[] requestBody) throws IOException {
+        String fullRoute = requestUri;
+        int firstSlash = fullRoute.indexOf('/', 1);
 
-        String remoteObject = fullRoute.substring(0, firstSlash);
+        String remoteObject = fullRoute.substring(1, firstSlash);
         String route = fullRoute.substring(firstSlash+1);
 
         JSONObject jsonObject = new JSONObject();
@@ -32,7 +29,7 @@ public class JsonMarshaller {
         jsonObject.put("route", route);
 
         // Ler corpo
-        BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
+        BufferedReader reader = new BufferedReader(new CharArrayReader(requestBody));
         if (reader.ready()){
             StringBuilder jsonBuilder = new StringBuilder();
             String line;
