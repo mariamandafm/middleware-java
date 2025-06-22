@@ -3,7 +3,7 @@ package main.java.ufrn.br;
 import main.java.ufrn.br.annotations.*;
 import org.json.JSONObject;
 
-@RemoteComponent(name = "book_app")
+@RemoteComponent(name = "")
 public class BookLog {
 
     @Get(route = "book/{id}")
