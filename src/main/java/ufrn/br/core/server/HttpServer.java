@@ -15,7 +15,7 @@ public class HttpServer {
         this.port = port;
         this.handler = handler;
         try {
-            this.socket = new ServerSocket(port, 600); // Servidor espera conexões na porta indicada
+            this.socket = new ServerSocket(port, 600);
         } catch (IOException e2) {
             e2.printStackTrace();
         }

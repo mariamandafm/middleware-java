@@ -33,14 +33,14 @@ public class Invoker {
 
         for (Method method : instance.getClass().getDeclaredMethods()) {
             Annotation annotation = method.getAnnotation(annotationClass);
-            if (annotation == null) continue;
+            if (annotation == null) continue; // tem anotação
 
             String annotatedRoute = extractRouteFromAnnotation(annotation);
             String regex = annotatedRoute.replaceAll("\\{\\w+}", "(\\\\d+)");
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(route);
 
-            if (!matcher.matches()) continue;
+            if (!matcher.matches()) continue; // tem rota
 
             Parameter[] params = method.getParameters();
             Object[] args = new Object[params.length];
@@ -50,7 +50,7 @@ public class Invoker {
 
                 if (param.isAnnotationPresent(Param.class)) {
                     String value = matcher.group(i + 1);
-                    args[i] = Integer.parseInt(value); // Assumindo int por simplicidade
+                    args[i] = Integer.parseInt(value);
                 } else if (param.isAnnotationPresent(RequestBody.class)) {
                     args[i] = requestBody;
                 }

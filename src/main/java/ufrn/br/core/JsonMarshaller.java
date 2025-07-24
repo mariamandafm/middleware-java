@@ -8,14 +8,14 @@ import java.util.StringTokenizer;
 
 public class JsonMarshaller {
 
-    // Chamado antes de enviar resposta
+    // chamado antes de enviar resposta
     public void marshall(URI requestUri, InputStream requestBody){
         JSONObject jsonObject = new JSONObject();
         System.out.println(requestUri);
         System.out.println(requestBody);
     }
 
-    // Chamado para ler requisição
+    // chamado para ler requisição
     public JSONObject unmarshall(String httpMethod, String requestUri, char[] requestBody) throws IOException {
         String fullRoute = requestUri;
         int firstSlash = fullRoute.indexOf('/', 1);

@@ -7,8 +7,6 @@ import main.java.ufrn.br.core.server.HttpServer;
 
 import java.io.IOException;
 
-// TODO: Implementar Remoting Error
-// TODO: Unmarshall
 public class Broker {
     private Lookup lookup = Lookup.getInstance();
 

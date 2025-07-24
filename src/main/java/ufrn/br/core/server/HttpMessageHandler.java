@@ -39,14 +39,13 @@ public class HttpMessageHandler{
             if (contentLenght > 0) {
                 message.read(requestBody, 0, contentLenght);
             }
-            System.out.println(input);
+            //System.out.println(input);
 
             JSONObject resourceRequest = marshaller.unmarshall(requestMethod, requestPath, requestBody);
-            System.out.println(resourceRequest);
+            //System.out.println(resourceRequest);
             Object instance = lookup.getObject(resourceRequest.getString("remoteObject"));
             try {
                 Object result = invoker.invoke(instance, resourceRequest);
-                // Chamar o marshall aqui??
                 return createHttpResponse(200, result.toString());
             } catch (Exception e){
                 e.printStackTrace();
